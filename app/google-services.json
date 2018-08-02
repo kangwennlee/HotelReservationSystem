@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "711298179722",
+    "firebase_url": "https://seam-11dc3.firebaseio.com",
+    "project_id": "seam-11dc3",
+    "storage_bucket": "seam-11dc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711298179722:android:9616f2858d594c0b",
+        "android_client_info": {
+          "package_name": "com.kangw.hotelreservationsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711298179722-0kjsr684klc09mc7816n230dquvki5j3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kangw.hotelreservationsystem",
+            "certificate_hash": "4ff119e4fbf2bdb83c8655900f9258a437519c77"
+          }
+        },
+        {
+          "client_id": "711298179722-7jjvrgikb200bl4ij8mbg38ejbp9ic6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgmABmp4d_McsLl3pZzD8Pdj4FbwMv59U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711298179722-7jjvrgikb200bl4ij8mbg38ejbp9ic6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
