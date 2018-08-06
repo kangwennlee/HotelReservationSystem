@@ -1,8 +1,6 @@
 package com.kangw.hotelreservationsystem;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -16,35 +14,65 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class AddRoom extends AppCompatActivity {
 
-    EditText editTextRoomPrice, editTextRoomQuantity;
+    EditText editTextRoomPrice, editTextRoomQty,editTextRoomID;
     Spinner spinnerRoomType;
     Button addBtn, resetBtn;
-    DatabaseReference mDatabase;
+    DatabaseReference databaseRoom, databaseRoomPrice;
+    List<Room> roomList;
+    List<Double> roomPrice;
+    int roomListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_room);
+        roomList = new LinkedList<>();
+        roomPrice = new LinkedList<>();
         //View binding
         editTextRoomPrice = findViewById(R.id.editTextRoomPrice);
-        editTextRoomQuantity = findViewById(R.id.editTextRoomQuantity);
+        editTextRoomQty = findViewById(R.id.editTextRoomQuantity);
+        editTextRoomID = findViewById(R.id.editTextRoomID);
         spinnerRoomType = findViewById(R.id.spinnerRoomType);
         addBtn = findViewById(R.id.addBtn);
         resetBtn = findViewById(R.id.resetBtn);
         //Firebase Intialization
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Room");
+        databaseRoom = FirebaseDatabase.getInstance().getReference().child("Room");
+        databaseRoomPrice = FirebaseDatabase.getInstance().getReference().child("RoomPrice");
+        //Initialize Room ID
+        databaseRoom.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                roomListSize = 0;
+                if(dataSnapshot.hasChildren()){
+                    roomList = dataSnapshot.getValue(new GenericTypeIndicator<List<Room>>(){});
+                    roomListSize= roomList.size();
+                }
+                editTextRoomID.setText("R"+(roomListSize+1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         //Initialize Room Type Spinner
         String[] roomType = getResources().getStringArray(R.array.room_type);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,roomType){
@@ -69,30 +97,28 @@ public class AddRoom extends AppCompatActivity {
         };
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerRoomType.setAdapter(adapter);
-        spinnerRoomType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //Initialize Room Price
+        databaseRoomPrice.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
-                    case 0:
-                        editTextRoomPrice.setText("00.00");
-                        break;
-                    case 1:
-                        editTextRoomPrice.setText("500.00");
-                        break;
-                    case 2:
-                        editTextRoomPrice.setText("650.00");
-                        break;
-                    case 3:
-                        editTextRoomPrice.setText("800.00");
-                        break;
-                    case 4:
-                        editTextRoomPrice.setText("1000.00");
-                        break;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+                    roomPrice = dataSnapshot.getValue(new GenericTypeIndicator<List<Double>>(){});
+                    spinnerRoomType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            editTextRoomPrice.setText(roomPrice.get(i).toString());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -102,7 +128,7 @@ public class AddRoom extends AppCompatActivity {
         for(int i = 0; i < roomQty.length;i++){
             roomQty[i] = ""+ (i+1);
         }
-        editTextRoomQuantity.setOnClickListener(new View.OnClickListener() {
+        editTextRoomQty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddRoom.this);
@@ -111,7 +137,7 @@ public class AddRoom extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // The 'which' argument contains the index position
                                 // of the selected item
-                                editTextRoomQuantity.setText(roomQty[which]);
+                                editTextRoomQty.setText(roomQty[which]);
                             }
                         });
                 AlertDialog alertDialog = builder.create();
@@ -122,23 +148,38 @@ public class AddRoom extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddRoom.this);
-                // Get the layout inflater
-                LayoutInflater inflater = getLayoutInflater();
+                if(!editTextRoomQty.getText().toString().isEmpty() && spinnerRoomType.getSelectedItemPosition()!=0){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddRoom.this);
+                    // Get the layout inflater
+                    LayoutInflater inflater = getLayoutInflater();
+                    // Inflate and set the layout for the dialog
+                    // Pass null as the parent view because its going in the dialog layout
+                    builder.setView(inflater.inflate(R.layout.progress, null));
+                    final AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    int numRoom = Integer.parseInt(editTextRoomQty.getText().toString());
+                    for(int i = roomListSize; i< roomListSize+numRoom ;i++){
+                        Room room = new Room("R"+(i+1),spinnerRoomType.getSelectedItem().toString(),Double.parseDouble(editTextRoomPrice.getText().toString()),"Free");
+                        roomList.add(room);
+                    }
+                    databaseRoom.setValue(roomList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            alertDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Rooms Added!",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                }else{
 
-                // Inflate and set the layout for the dialog
-                // Pass null as the parent view because its going in the dialog layout
-                builder.setView(inflater.inflate(R.layout.progress, null));
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                List<Room> roomList = new LinkedList<>();
-                int numRoom = Integer.getInteger(editTextRoomQuantity.getText().toString());
-                for(int i = 0; i< numRoom ;i++){
-                    Room room = new Room("R"+(i+1),spinnerRoomType.getSelectedItem().toString(),Double.parseDouble(editTextRoomPrice.getText().toString()),"Free");
-                    roomList.add(room);
                 }
-                mDatabase.setValue(roomList);
-                alertDialog.hide();
+            }
+        });
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerRoomType.setSelection(0);
+                editTextRoomQty.setText("1");
             }
         });
     }

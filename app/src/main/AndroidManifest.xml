@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kangw.hotelreservationsystem">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRoom"></activity>
+        <activity android:name=".AddRoom" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="eb25c5c70eb677120f8140f0f730158908ccd8c4" />
+
+        <activity android:name=".UpdateRoom"></activity>
     </application>
 
 </manifest>
