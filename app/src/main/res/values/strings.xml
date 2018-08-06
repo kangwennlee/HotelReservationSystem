@@ -9,4 +9,13 @@
     <string name="action_settings">Settings</string>
     <string name="check_in">Check-in</string>
     <string name="check_out">Check-out</string>
+
+    <string-array name="room_type">
+        <item>Select Room Type</item>
+        <item>Deluxe Room</item>
+        <item>Premier Twin Room</item>
+        <item>Executive Suite Room</item>
+        <item>VIP Room</item>
+    </string-array>
+
 </resources>
