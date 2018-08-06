@@ -35,7 +35,9 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginLeft="50dp">
+
             <ImageButton
+                android:id="@+id/imgBtnUpdateRoom"
                 android:layout_width="100dp"
                 android:layout_height="100dp" />
             <TextView
@@ -59,6 +61,7 @@
             android:orientation="vertical">
 
             <ImageButton
+                android:id="@+id/imgBtnUpdateRoomPrice"
                 android:layout_width="100dp"
                 android:layout_height="100dp" />
 

@@ -3,16 +3,14 @@ package com.kangw.hotelreservationsystem;
 public class Room {
     private String roomID;
     private String roomType;
-    private double roomPrice;
     private String status;
 
     public Room() {
     }
 
-    public Room(String roomID, String roomType, double roomPrice, String status) {
+    public Room(String roomID, String roomType, String status) {
         this.roomID = roomID;
         this.roomType = roomType;
-        this.roomPrice = roomPrice;
         this.status = status;
     }
 
@@ -30,14 +28,6 @@ public class Room {
 
     public void setRoomType(String roomType) {
         this.roomType = roomType;
-    }
-
-    public double getRoomPrice() {
-        return roomPrice;
-    }
-
-    public void setRoomPrice(double roomPrice) {
-        this.roomPrice = roomPrice;
     }
 
     public String getStatus() {

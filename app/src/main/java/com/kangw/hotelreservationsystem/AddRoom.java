@@ -32,13 +32,13 @@ import java.util.List;
 
 public class AddRoom extends AppCompatActivity {
 
-    EditText editTextRoomPrice, editTextRoomQty,editTextRoomID;
-    Spinner spinnerRoomType;
-    Button addBtn, resetBtn;
-    DatabaseReference databaseRoom, databaseRoomPrice;
-    List<Room> roomList;
-    List<Double> roomPrice;
-    int roomListSize;
+    private EditText editTextRoomPrice, editTextRoomQty,editTextRoomID;
+    private Spinner spinnerRoomType, spinnerRoomStatus;
+    private Button addBtn, resetBtn;
+    private DatabaseReference databaseRoom, databaseRoomPrice;
+    private List<Room> roomList;
+    private List<Double> roomPrice;
+    private int roomListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class AddRoom extends AppCompatActivity {
         editTextRoomQty = findViewById(R.id.editTextRoomQuantity);
         editTextRoomID = findViewById(R.id.editTextRoomID);
         spinnerRoomType = findViewById(R.id.spinnerRoomType);
+        spinnerRoomStatus = findViewById(R.id.spinnerRoomStatus);
         addBtn = findViewById(R.id.addBtn);
         resetBtn = findViewById(R.id.resetBtn);
         //Firebase Intialization
@@ -144,6 +145,10 @@ public class AddRoom extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+        //Initialize Status
+        String[] roomStatus = getResources().getStringArray(R.array.room_status);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item,roomStatus);
+        spinnerRoomStatus.setAdapter(adapter1);
         //Initialize Add Button
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,14 +164,14 @@ public class AddRoom extends AppCompatActivity {
                     alertDialog.show();
                     int numRoom = Integer.parseInt(editTextRoomQty.getText().toString());
                     for(int i = roomListSize; i< roomListSize+numRoom ;i++){
-                        Room room = new Room("R"+(i+1),spinnerRoomType.getSelectedItem().toString(),Double.parseDouble(editTextRoomPrice.getText().toString()),"Free");
+                        Room room = new Room("R"+(i+1),spinnerRoomType.getSelectedItem().toString(),spinnerRoomStatus.getSelectedItem().toString());
                         roomList.add(room);
                     }
                     databaseRoom.setValue(roomList).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             alertDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),"Rooms Added!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Room Added!",Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });

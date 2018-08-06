@@ -69,18 +69,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Booked" />
+            android:text="Status" />
 
-        <EditText
-            android:id="@+id/editTextRoomStatus"
+        <Spinner
+            android:id="@+id/spinnerRoomStatus"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:ems="10"
-            android:hint="Booked"
-            android:text="No"
-            android:inputType="textPersonName" />
+            android:layout_height="50dp" />
 
         <TextView
             android:id="@+id/textView10"

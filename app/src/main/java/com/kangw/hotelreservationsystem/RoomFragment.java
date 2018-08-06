@@ -76,6 +76,14 @@ public class RoomFragment extends Fragment {
                 startActivity(i);
             }
         });
+        ImageButton imageButtonUpdateRoom = v.findViewById(R.id.imgBtnUpdateRoom);
+        imageButtonUpdateRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(),UpdateRoom.class);
+                startActivity(i);
+            }
+        });
         return v;
     }
 
