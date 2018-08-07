@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="30dp"
-    tools:context=".RoomFragment">
+    tools:context=".ReservationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:gravity="center">
             <ImageButton
-                android:id="@+id/imgBtnAddRoom"
+                android:id="@+id/imgBtnAddReservation"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_add_box_black_24dp"
@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Room"/>
+                android:text="Add Reservation"/>
         </LinearLayout>
 
         <LinearLayout
@@ -37,7 +37,7 @@
             android:layout_marginLeft="50dp">
 
             <ImageButton
-                android:id="@+id/imgBtnUpdateRoom"
+                android:id="@+id/imgBtnUpdateReservation"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_update_black_24dp"
@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Room"/>
+                android:text="Update Reservation"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -85,7 +85,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/imgBtnViewRoom"
+                android:id="@+id/imgBtnViewReservation"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_pageview_black_24dp"
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Room" />
+                android:text="View Reservation" />
         </LinearLayout>
 
     </LinearLayout>

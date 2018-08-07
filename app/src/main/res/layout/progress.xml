@@ -17,6 +17,7 @@
         android:layout_marginLeft="20dp"
         android:text="Loading..."
         android:textSize="20sp"
+        android:gravity="center"
         android:textAlignment="center"/>
 </LinearLayout>
 

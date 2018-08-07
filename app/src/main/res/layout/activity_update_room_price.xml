@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    tools:context=".UpdateRoomPrice">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deluxe Room"
+        />
+
+    <EditText
+        android:id="@+id/editTextDeluxe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Deluxe Room Price"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Premier Twin Room"
+        android:layout_marginTop="20dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextPremier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Primier Twin Room Price"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Executive Suite Room"
+        android:layout_marginTop="20dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextExecutive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Executive Suite Room Price"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIP Room"
+        android:layout_marginTop="20dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextVIP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="VIP Price"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_marginTop="20dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Update"/>
+
+
+</LinearLayout>

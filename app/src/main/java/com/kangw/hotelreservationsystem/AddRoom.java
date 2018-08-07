@@ -58,7 +58,7 @@ public class AddRoom extends AppCompatActivity {
         databaseRoom = FirebaseDatabase.getInstance().getReference().child("Room");
         databaseRoomPrice = FirebaseDatabase.getInstance().getReference().child("RoomPrice");
         //Initialize Room ID
-        databaseRoom.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRoom.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roomListSize = 0;
@@ -99,7 +99,7 @@ public class AddRoom extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerRoomType.setAdapter(adapter);
         //Initialize Room Price
-        databaseRoomPrice.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRoomPrice.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()){
@@ -172,7 +172,7 @@ public class AddRoom extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             alertDialog.dismiss();
                             Toast.makeText(getApplicationContext(),"Room Added!",Toast.LENGTH_SHORT).show();
-                            finish();
+                            //finish();
                         }
                     });
                 }else{

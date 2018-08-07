@@ -8,8 +8,13 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/app_bar_main"
-    android:layout_margin="20dp">
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,57 +88,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:gravity="center">
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="50dp"
+        <Spinner
+            android:id="@+id/spinnerNumRoom"
+            android:layout_width="80dp"
             android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:text="1"
-            android:clickable="true"
-            android:focusable="false"
-            android:longClickable="false"
             />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:text="Room" />
 
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="50dp"
+        <Spinner
+            android:id="@+id/spinnerNumAdult"
+            android:layout_width="80dp"
             android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:text="2"
-            android:clickable="true"
-            android:focusable="false"
-            android:longClickable="false"
             />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:text="Adults" />
 
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="50dp"
+        <Spinner
+            android:id="@+id/spinnerNumChildren"
+            android:layout_width="80dp"
             android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:text="0"
-            android:clickable="true"
-            android:focusable="false"
-            android:longClickable="false"/>
+            />
 
         <TextView
             android:id="@+id/textView5"

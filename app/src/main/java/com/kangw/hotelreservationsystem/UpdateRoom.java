@@ -60,7 +60,7 @@ public class UpdateRoom extends AppCompatActivity {
         builder.setView(inflater.inflate(R.layout.progress, null));
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        databaseRoom.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRoom.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()){
@@ -166,7 +166,7 @@ public class UpdateRoom extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         alertDialog.dismiss();
                         Toast.makeText(getApplicationContext(),"Room Updated!",Toast.LENGTH_SHORT).show();
-                        finish();
+                        //finish();
                     }
                 });
             }

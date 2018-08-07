@@ -1,5 +1,6 @@
 package com.kangw.hotelreservationsystem;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +9,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -24,6 +33,12 @@ public class HomepageFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private EditText checkIn, checkOut;
+    private Spinner room,adult,children;
+    private Button btnSearch;
+
+    Calendar myCalendar,myCalendar2;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -67,14 +82,94 @@ public class HomepageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_homepage, container, false);
-        Button searchBtn = v.findViewById(R.id.searchButton);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
+        checkIn = v.findViewById(R.id.homepageCheckIn);
+        checkOut = v.findViewById(R.id.homepageCheckOut);
+        room = v.findViewById(R.id.spinnerNumRoom);
+        adult = v.findViewById(R.id.spinnerNumAdult);
+        children = v.findViewById(R.id.spinnerNumChildren);
+        btnSearch = v.findViewById(R.id.searchButton);
+
+
+        myCalendar = Calendar.getInstance();
+        myCalendar2 = Calendar.getInstance();
+        myCalendar2.set(Calendar.DAY_OF_YEAR,myCalendar2.get(Calendar.DAY_OF_YEAR)+1);
+        updateLabel();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth); // minus 1 because the updateLabel function will add one
+                updateLabel();
+            }
+        };
+        checkIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+                Calendar calendar = Calendar.getInstance();
+                //calendar.add(Calendar.DAY_OF_YEAR,1);
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR));
+                //mDatePicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+                mDatePicker.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                mDatePicker.show();
+            }
+        });
+        final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
 
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar2.set(Calendar.YEAR, year);
+                myCalendar2.set(Calendar.MONTH, monthOfYear);
+                myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth); // minus 1 because the updateLabel function will add one
+                updateLabel();
+            }
+        };
+        checkOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), date2, myCalendar2.get(Calendar.YEAR), myCalendar2.get(Calendar.MONTH), myCalendar2.get(Calendar.DAY_OF_MONTH));
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+                Calendar calendar = Calendar.getInstance();
+                //calendar.add(Calendar.DAY_OF_YEAR,1);
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                calendar.set(Calendar.DAY_OF_YEAR, myCalendar.get(Calendar.DAY_OF_YEAR)+1);
+                //mDatePicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+                mDatePicker.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                mDatePicker.show();
+            }
+        });
+
+        Integer[] numRoom = {1,2,3,4,5};
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(),R.layout.spinner_item,numRoom);
+        room.setAdapter(adapter);
+        adult.setAdapter(adapter);
+        children.setAdapter(adapter);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(),SearchResult.class);
+                startActivity(i);
             }
         });
         return v;
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        //myCalendar.add(Calendar.DATE, 1); // add one day because today date can't make deal
+        checkIn.setText(sdf.format(myCalendar.getTime()));
+        if(myCalendar2.getTime().compareTo(myCalendar.getTime())<1){
+            myCalendar2.set(Calendar.DAY_OF_YEAR,myCalendar.get(Calendar.DAY_OF_YEAR)+1);
+        }
+        checkOut.setText(sdf.format(myCalendar2.getTime()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,27 +1,23 @@
 package com.kangw.hotelreservationsystem;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RoomFragment.OnFragmentInteractionListener} interface
+ * {@link ReservationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RoomFragment#newInstance} factory method to
+ * Use the {@link ReservationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RoomFragment extends Fragment {
+public class ReservationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +29,7 @@ public class RoomFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public RoomFragment() {
+    public ReservationFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +39,11 @@ public class RoomFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RoomFragment.
+     * @return A new instance of fragment ReservationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RoomFragment newInstance(String param1, String param2) {
-        RoomFragment fragment = new RoomFragment();
+    public static ReservationFragment newInstance(String param1, String param2) {
+        ReservationFragment fragment = new ReservationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,46 +64,7 @@ public class RoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_room_main, container, false);
-
-        ImageButton imgBtnAddRoom = v.findViewById(R.id.imgBtnAddRoom);
-        imgBtnAddRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(),AddRoom.class);
-                startActivity(i);
-            }
-        });
-
-
-        ImageButton imageButtonUpdateRoom = v.findViewById(R.id.imgBtnUpdateRoom);
-        imageButtonUpdateRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(),UpdateRoom.class);
-                startActivity(i);
-            }
-        });
-
-
-        ImageButton imageButtonUpdatePrice = v.findViewById(R.id.imgBtnUpdateRoomPrice);
-        imageButtonUpdatePrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(),UpdateRoomPrice.class);
-                startActivity(i);
-            }
-        });
-
-        ImageButton imageButtonViewRoom = v.findViewById(R.id.imgBtnViewRoom);
-        imageButtonViewRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(),ViewRoom.class);
-                startActivity(i);
-            }
-        });
-        return v;
+        return inflater.inflate(R.layout.fragment_reservation, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
