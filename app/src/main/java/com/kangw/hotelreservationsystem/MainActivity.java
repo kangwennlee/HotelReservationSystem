@@ -3,11 +3,13 @@ package com.kangw.hotelreservationsystem;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +20,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.crashlytics.android.Crashlytics;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
@@ -104,6 +113,8 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = new RoomFragment();
             ft.replace(R.id.frame_container, fragment, "room").addToBackStack("room").commit();
         } else if (id == R.id.nav_gallery) {
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -112,7 +123,21 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Signed out!", Toast.LENGTH_LONG);
+                                //Intent i = new Intent(getApplicationContext(), LauncherActivity.class);
+                                //startActivity(i);
+                                //finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), R.string.sign_out_failed, Toast.LENGTH_LONG);
+                            }
+                        }
+                    });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

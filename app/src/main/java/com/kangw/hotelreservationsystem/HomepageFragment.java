@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -149,12 +150,21 @@ public class HomepageFragment extends Fragment {
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(),R.layout.spinner_item,numRoom);
         room.setAdapter(adapter);
         adult.setAdapter(adapter);
-        children.setAdapter(adapter);
+        Integer[] numChild = {0,1,2,3};
+        ArrayAdapter<Integer> adapter1 = new ArrayAdapter<Integer>(getContext(),R.layout.spinner_item,numChild);
+        children.setAdapter(adapter1);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(),SearchResult.class);
+                ArrayList<String> stringArrayList = new ArrayList<>();
+                stringArrayList.add(checkIn.getText().toString());
+                stringArrayList.add(checkOut.getText().toString());
+                stringArrayList.add(room.getSelectedItem().toString());
+                stringArrayList.add(adult.getSelectedItem().toString());
+                stringArrayList.add(children.getSelectedItem().toString());
+                i.putExtra("searchCriteria",stringArrayList);
                 startActivity(i);
             }
         });

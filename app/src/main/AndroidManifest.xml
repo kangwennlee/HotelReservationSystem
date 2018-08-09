@@ -31,7 +31,8 @@
         <activity android:name=".UpdateRoomPrice" />
         <activity android:name=".ViewRoom" />
         <activity android:name=".SearchResult" />
-        <activity android:name=".GuestDetail"></activity>
+        <activity android:name=".ReservationConfirm" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

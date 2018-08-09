@@ -10,6 +10,19 @@
     <string name="check_in">Check-in</string>
     <string name="check_out">Check-out</string>
 
+    <string name="unknown_response">Unexpected onActivityResult response code</string>
+    <string name="unknown_sign_in_response">Unknown response from AuthUI sign-in</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">An unknown error occurred</string>
+
+    <!-- Auth UI - Signed in -->
+    <string name="signed_in_header">You are signed in!</string>
+    <string name="sign_out">Sign out</string>
+    <string name="delete_account_label">Delete account</string>
+    <string name="sign_out_failed">Sign out failed</string>
+    <string name="delete_account_failed">Delete account failed</string>
+
     <string-array name="room_type">
         <item>Select Room Type</item>
         <item>Deluxe Room</item>
