@@ -99,7 +99,7 @@ public class SearchResult extends AppCompatActivity {
                         }
                     }
                     for(int i = 0; i < roomList.size();i++){
-                        roomList.get(i).setRoomFree("Number of room available: "+numRoomFree[i].toString());
+                        roomList.get(i).setRoomFree(numRoomFree[i].toString());
 
                     }
                 }

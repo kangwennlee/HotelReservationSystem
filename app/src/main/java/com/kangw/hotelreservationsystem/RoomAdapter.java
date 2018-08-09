@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,6 +41,7 @@ public class RoomAdapter extends ArrayAdapter<RoomCategory> {
         TextView roomDescription = convertView.findViewById(R.id.textViewRoomChar);
         TextView roomPrice = convertView.findViewById(R.id.textViewRoomPrice);
         TextView roomFree = convertView.findViewById(R.id.textViewNumRoom);
+        final Spinner spinner = convertView.findViewById(R.id.spinnerNumRoomSelected);
         Button btnBook = convertView.findViewById(R.id.btnBook);
 
         final RoomCategory roomCategory = data.get(position);
@@ -53,7 +55,13 @@ public class RoomAdapter extends ArrayAdapter<RoomCategory> {
         roomType.setText(roomCategory.getRoomType());
         roomDescription.setText(roomCategory.getRoomDesc());
         roomPrice.setText(roomCategory.getRoomPrice());
-        roomFree.setText(roomCategory.getRoomFree());
+        roomFree.setText("Number of room available: "+roomCategory.getRoomFree());
+        Integer[] integers = new Integer[Integer.parseInt(roomCategory.getRoomFree())];
+        for(int i = 0; i <integers.length+1;i++){
+            integers[i] = i;
+        }
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(), android.R.layout.simple_list_item_1, integers);
+        spinner.setAdapter(adapter);
 
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +69,7 @@ public class RoomAdapter extends ArrayAdapter<RoomCategory> {
                 Intent i = new Intent(getContext(),ReservationConfirm.class);
                 i.putExtra("searchCriteria",roomCategory.getSearchCriteria());
                 i.putExtra("roomSelected",position);
+                i.putExtra("numRoomSelected",spinner.getSelectedItem().toString());
                 getContext().startActivity(i);
             }
         });
