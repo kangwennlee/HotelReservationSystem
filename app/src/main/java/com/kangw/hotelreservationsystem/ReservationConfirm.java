@@ -36,9 +36,12 @@ public class ReservationConfirm extends AppCompatActivity {
         numRoom.setText(arrayList.get(2));
         numAdult.setText(arrayList.get(3));
         numChildren.setText(arrayList.get(4));
-        int roomSelectedNum = intent.getIntExtra("roomSelected",0);
         String[] roomType = getResources().getStringArray(R.array.room_type);
-        roomSelected.setText(roomType[roomSelectedNum+1]);
+        StringBuilder roomSelectText = new StringBuilder();
+        for(int i = 0; i < 4; i++){
+            roomSelectText.append(roomType[i+1]).append(arrayList.get(i+5)).append("\n");
+        }
+        roomSelected.setText(roomSelectText);
 
         btnLogin = findViewById(R.id.btnLogin);
 

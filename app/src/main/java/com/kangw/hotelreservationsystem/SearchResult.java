@@ -6,7 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +29,8 @@ public class SearchResult extends AppCompatActivity {
     ArrayList<RoomCategory> roomList;
     ListView listView;
     ArrayList<String> searchCriteria;
+    Button btnBook;
+    RoomAdapter roomAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,7 @@ public class SearchResult extends AppCompatActivity {
         searchCriteria = intent.getStringArrayListExtra("searchCriteria");
 
         listView = findViewById(R.id.listViewRoom);
+        btnBook = findViewById(R.id.btnBook);
 
         databaseRoom = FirebaseDatabase.getInstance().getReference();
 
@@ -54,6 +62,7 @@ public class SearchResult extends AppCompatActivity {
         builder.setView(inflater.inflate(R.layout.progress, null));
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        btnBook.setEnabled(false);
 
         databaseRoom.addValueEventListener(new ValueEventListener() {
             @Override
@@ -62,13 +71,12 @@ public class SearchResult extends AppCompatActivity {
                     List<String> room = dataSnapshot.child("RoomType").getValue(new GenericTypeIndicator<List<String>>(){});
                     for(int i=0;i<roomList.size();i++){
                         roomList.get(i).setRoomType(room.get(i));
-                        roomList.get(i).setSearchCriteria(searchCriteria);
                     }
                 }
                 if(dataSnapshot.child("RoomPrice").hasChildren()){
                     List<Double> room = dataSnapshot.child("RoomPrice").getValue(new GenericTypeIndicator<List<Double>>(){});
                     for(int i=0;i<roomList.size();i++){
-                        roomList.get(i).setRoomPrice("RM "+room.get(i+1).toString());
+                        roomList.get(i).setRoomPrice(room.get(i+1).toString());
                     }
                 }
                 if(dataSnapshot.child("RoomDesc").hasChildren()){
@@ -103,14 +111,43 @@ public class SearchResult extends AppCompatActivity {
 
                     }
                 }
-                RoomAdapter roomAdapter = new RoomAdapter(getApplicationContext(),roomList);
+                roomAdapter = new RoomAdapter(getApplicationContext(),roomList);
                 listView.setAdapter(roomAdapter);
                 alertDialog.dismiss();
+                btnBook.setEnabled(true);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean proceed = false;
+                for(int i = 0; i<roomAdapter.data.size();i++){
+                    if(!roomAdapter.data.get(i).getNumRoomSelected().equals("0")){
+                        proceed = true;
+                    }
+                }
+                if(proceed){
+                    if(searchCriteria.size()<9 ){
+                        for(int i = 0; i<roomAdapter.data.size();i++){
+                            searchCriteria.add(roomAdapter.data.get(i).getNumRoomSelected());
+                        }
+                    }else{
+                        for(int i = 0; i<4;i++){
+                            searchCriteria.set(i+5,roomAdapter.data.get(i).getNumRoomSelected());
+                        }
+                    }
+                    Intent intent = new Intent(getApplicationContext(),ReservationConfirm.class);
+                    intent.putExtra("searchCriteria",searchCriteria);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please select number of rooms!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -1,23 +1,21 @@
 package com.kangw.hotelreservationsystem;
 
-import java.util.ArrayList;
-
 public class RoomCategory {
     private String roomType;
     private String roomDesc;
     private String roomPrice;
     private String roomFree;
-    private ArrayList<String> searchCriteria;
+    private String numRoomSelected;
 
     public RoomCategory() {
     }
 
-    public RoomCategory(String roomType, String roomDesc, String roomPrice, String roomFree, ArrayList<String> searchCriteria) {
+    public RoomCategory(String roomType, String roomDesc, String roomPrice, String roomFree, String numRoomSelected) {
         this.roomType = roomType;
         this.roomDesc = roomDesc;
         this.roomPrice = roomPrice;
         this.roomFree = roomFree;
-        this.searchCriteria = searchCriteria;
+        this.numRoomSelected = numRoomSelected;
     }
 
     public String getRoomType() {
@@ -52,11 +50,11 @@ public class RoomCategory {
         this.roomFree = roomFree;
     }
 
-    public ArrayList<String> getSearchCriteria() {
-        return searchCriteria;
+    public String getNumRoomSelected() {
+        return numRoomSelected;
     }
 
-    public void setSearchCriteria(ArrayList<String> searchCriteria) {
-        this.searchCriteria = searchCriteria;
+    public void setNumRoomSelected(String numRoomSelected) {
+        this.numRoomSelected = numRoomSelected;
     }
 }

@@ -1,15 +1,14 @@
 package com.kangw.hotelreservationsystem;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,8 +40,8 @@ public class RoomAdapter extends ArrayAdapter<RoomCategory> {
         TextView roomDescription = convertView.findViewById(R.id.textViewRoomChar);
         TextView roomPrice = convertView.findViewById(R.id.textViewRoomPrice);
         TextView roomFree = convertView.findViewById(R.id.textViewNumRoom);
-        final Spinner spinner = convertView.findViewById(R.id.spinnerNumRoomSelected);
-        Button btnBook = convertView.findViewById(R.id.btnBook);
+        Spinner spinner = convertView.findViewById(R.id.spinnerNumRoomSelected);
+
 
         final RoomCategory roomCategory = data.get(position);
         FirebaseStorage.getInstance().getReference().child("roomPic").child(String.valueOf(position)+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -54,23 +53,28 @@ public class RoomAdapter extends ArrayAdapter<RoomCategory> {
         });
         roomType.setText(roomCategory.getRoomType());
         roomDescription.setText(roomCategory.getRoomDesc());
-        roomPrice.setText(roomCategory.getRoomPrice());
+        roomPrice.setText("RM "+roomCategory.getRoomPrice());
         roomFree.setText("Number of room available: "+roomCategory.getRoomFree());
-        Integer[] integers = new Integer[Integer.parseInt(roomCategory.getRoomFree())];
-        for(int i = 0; i <integers.length+1;i++){
+        final Integer[] integers = new Integer[Integer.parseInt(roomCategory.getRoomFree())+1];
+        for(int i = 0; i <integers.length;i++){
             integers[i] = i;
         }
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(), android.R.layout.simple_list_item_1, integers);
         spinner.setAdapter(adapter);
-
-        btnBook.setOnClickListener(new View.OnClickListener() {
+        if(roomCategory.getNumRoomSelected()==null){
+            roomCategory.setNumRoomSelected("0");
+        }else{
+            spinner.setSelection(Integer.parseInt(roomCategory.getNumRoomSelected()));
+        }
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(),ReservationConfirm.class);
-                i.putExtra("searchCriteria",roomCategory.getSearchCriteria());
-                i.putExtra("roomSelected",position);
-                i.putExtra("numRoomSelected",spinner.getSelectedItem().toString());
-                getContext().startActivity(i);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                roomCategory.setNumRoomSelected(integers[i].toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 

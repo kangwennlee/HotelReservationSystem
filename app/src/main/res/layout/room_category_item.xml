@@ -13,6 +13,7 @@
             android:id="@+id/imageViewRoomPic"
             android:layout_width="100dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/ic_pageview_black_24dp"/>
 
         <LinearLayout
@@ -44,6 +45,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:paddingBottom="10dp"
+            android:layout_gravity="right"
             android:gravity="bottom"
             android:hint="Room Price"/>
 
@@ -55,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:hint="Number of room available"/>
 
     <LinearLayout
@@ -72,16 +75,10 @@
 
         <Spinner
             android:id="@+id/spinnerNumRoomSelected"
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="50dp"/>
 
-        <Button
-            android:id="@+id/btnBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="10dp"
-            android:text="Book"/>
 
     </LinearLayout>
 
