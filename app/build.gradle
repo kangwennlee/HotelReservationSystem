@@ -11,6 +11,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
+    maven {
+        url "https://jitpack.io"
+    }
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -19,7 +22,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.kangw.hotelreservationsystem"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -43,10 +46,22 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //Firebase UI
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
+    //volley
+    implementation 'com.android.volley:volley:1.1.0'
+    //credit card form
+    implementation 'com.braintreepayments:card-form:3.1.1'
+    implementation 'io.card:android-sdk:5.5.0'
+    //QR scanner
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    //Fingerprint API
+    implementation 'com.github.JesusM:FingerprintManager:v2.0.2'
+    //Fabric
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }

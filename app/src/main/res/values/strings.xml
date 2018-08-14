@@ -23,6 +23,12 @@
     <string name="sign_out_failed">Sign out failed</string>
     <string name="delete_account_failed">Delete account failed</string>
 
+    <!-- Card io -->
+    <string name="valid">Card is valid.</string>
+    <string name="invalid">Card invalid</string>
+    <string name="scan_with_card_io">Scan with card.io</string>
+
+
     <string-array name="room_type">
         <item>Select Room Type</item>
         <item>Deluxe Room</item>
