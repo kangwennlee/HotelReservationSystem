@@ -49,4 +49,9 @@
     <string name="title_activity_update_room">UpdateRoom</string>
     <string name="title_activity_main2">Main2Activity</string>
 
+    <string name="tab_text_1">Upcoming Reservation</string>
+    <string name="tab_text_2">Past Reservation</string>
+
+    <string name="MyPurchase">My Reservation</string>
+
 </resources>

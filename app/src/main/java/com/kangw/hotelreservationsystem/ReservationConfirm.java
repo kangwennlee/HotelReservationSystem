@@ -38,7 +38,7 @@ public class ReservationConfirm extends AppCompatActivity {
     String[] roomType;
     ArrayList<String> arrayList;
     Double total;
-    String receipt;
+    Reservation reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class ReservationConfirm extends AppCompatActivity {
         Intent intent = getIntent();
         arrayList = new ArrayList<>();
         arrayList = intent.getStringArrayListExtra("searchCriteria");
-        receipt = "";
+        reservation = new Reservation();
 
         checkIn = findViewById(R.id.textViewCheckIn);
         checkOut = findViewById(R.id.textViewCheckOut);
@@ -59,26 +59,34 @@ public class ReservationConfirm extends AppCompatActivity {
         totalPrice = findViewById(R.id.textViewTotalPrice);
 
         checkIn.setText(arrayList.get(0));
-        receipt += "Check In Date: " + arrayList.get(0) + "\n";
+        reservation.setCheckInDate(arrayList.get(0));
+
         checkOut.setText(arrayList.get(1));
-        receipt += "Check Out Date: " + arrayList.get(1) + "\n";
-        numRoom.setText(arrayList.get(2));
-        receipt += "Number of Room: " + arrayList.get(2) + "\n";
-        numAdult.setText(arrayList.get(3));
-        receipt += "Number of Adult: " + arrayList.get(3) + "\n";
-        numChildren.setText(arrayList.get(4));
-        receipt += "Number of Children: " + arrayList.get(4) + "\n";
+        reservation.setCheckOutDate(arrayList.get(1));
+
+        //numRoom.setText(arrayList.get(2));
+        //receipt += "Number of Room: " + arrayList.get(2) + "\n";
+
+        numAdult.setText(arrayList.get(2));
+        reservation.setNumAdult(arrayList.get(2));
+
+        numChildren.setText(arrayList.get(3));
+        reservation.setNumChild(arrayList.get(3));
+
 
         roomType = getResources().getStringArray(R.array.room_type);
         StringBuilder roomSelectText = new StringBuilder();
-        receipt += "Room Selected: " + "\n";
+        Integer numRoom = 0;
 
         for(int i = 0; i < 4; i++){
-            if(Integer.parseInt(arrayList.get(i+5))>0){
-                roomSelectText.append(arrayList.get(i+5)).append(" x ").append(roomType[i+1]).append("\n");
+            Integer num = Integer.parseInt(arrayList.get(i+4));
+            if(num>0){
+                roomSelectText.append(arrayList.get(i+4)).append(" x ").append(roomType[i+1]).append("\n");
+                numRoom += num;
             }
         }
-        receipt += roomSelectText.toString();
+        reservation.setRoomSelected(roomSelectText.toString());
+        reservation.setNumRoom(numRoom.toString());
         roomSelected.setText(roomSelectText);
 
         total = 0.0;
@@ -90,7 +98,7 @@ public class ReservationConfirm extends AppCompatActivity {
                 if(dataSnapshot.hasChildren()){
                     List<Double> room = dataSnapshot.getValue(new GenericTypeIndicator<List<Double>>(){});
                     for(int i = 0; i < 4; i++){
-                        Integer numRoom = Integer.parseInt(arrayList.get(i+5));
+                        Integer numRoom = Integer.parseInt(arrayList.get(i+4));
                         if(numRoom>0){
                             roomPrice.append(roomType[i+1]).append(" @ RM").append(room.get(i+1).toString()).append("\n");
                             total += room.get(i+1)*numRoom;
@@ -98,7 +106,7 @@ public class ReservationConfirm extends AppCompatActivity {
                     }
                     pricePerRoom.setText(roomPrice);
                     totalPrice.setText("RM"+total);
-                    receipt += "Total Price: RM" + total + "\n";
+                    reservation.setTotalPrice(total.toString());
                 }
             }
 
@@ -125,8 +133,7 @@ public class ReservationConfirm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-                    Intent i = new Intent(getApplicationContext(),AddCard.class);
-                    startActivityForResult(i,150);
+                    fingerAuth();
                 }else{
                     Intent i = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(i);
@@ -147,10 +154,10 @@ public class ReservationConfirm extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != 151) {
-            Toast.makeText(getApplicationContext(), "Payment Cancelled!", Toast.LENGTH_LONG).show();
+        if (resultCode == 151) {
+            storeReservation();
         } else {
-            fingerAuth();
+            Toast.makeText(getApplicationContext(), "Payment Cancelled!", Toast.LENGTH_LONG).show();
             //textViewCard.setText("Card Selected: " + data.getStringExtra("Card"));
         }
     }
@@ -159,12 +166,14 @@ public class ReservationConfirm extends AppCompatActivity {
         createFingerprintManagerInstance().authenticate(new KFingerprintManager.AuthenticationCallback() {
             @Override
             public void onAuthenticationSuccess() {
-                //messageText.setText("Successfully authenticated");
-                storeReservation();
+                Toast.makeText(getApplicationContext(),"Successfully authenticated",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(),AddCard.class);
+                startActivityForResult(i,150);
             }
 
             @Override
             public void onSuccessWithManualPassword(@NotNull String password) {
+                Toast.makeText(getApplicationContext(),"Manual password",Toast.LENGTH_SHORT).show();
                 //messageText.setText("Manual password: " + password);
             }
 
@@ -175,17 +184,21 @@ public class ReservationConfirm extends AppCompatActivity {
 
             @Override
             public void onAuthenticationFailedWithHelp(@Nullable String help) {
-                //messageText.setText(help);
+                Toast.makeText(getApplicationContext(),help,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFingerprintNotAvailable() {
                 //messageText.setText("Fingerprint not available");
+                Toast.makeText(getApplicationContext(),"Fingerprint not available",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(),AddCard.class);
+                startActivityForResult(i,150);
             }
 
             @Override
             public void onCancelled() {
                 //messageText.setText("Operation cancelled by user");
+                Toast.makeText(getApplicationContext(),"Operation cancelled by user",Toast.LENGTH_SHORT).show();
             }
         }, getSupportFragmentManager());
 
@@ -195,12 +208,18 @@ public class ReservationConfirm extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
         String date = sdf.format(new Date());
         String time = date.substring(9,11) + ":" + date.substring(11,13) + ":" + date.substring(12,14);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Reservation");
-        databaseReference.setValue(receipt, new DatabaseReference.CompletionListener() {
+        reservation.setReservationDate(date);
+        reservation.setReservationTime(time);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Reservation").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(date);
+        databaseReference.setValue(reservation, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                Toast.makeText(getApplicationContext(),"Reservation completed!",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 Intent i = new Intent(getApplicationContext(),SuccessPaymentActivity.class);
-                i.putExtra("purchase", receipt);
+                i.putExtra("purchase", reservation.toString());
                 startActivity(i);
                 finish();
             }

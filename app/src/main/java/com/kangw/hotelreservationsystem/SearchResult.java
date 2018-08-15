@@ -128,8 +128,14 @@ public class SearchResult extends AppCompatActivity {
             public void onClick(View view) {
                 boolean proceed = false;
                 for(int i = 0; i<roomAdapter.data.size();i++){
-                    if(!roomAdapter.data.get(i).getNumRoomSelected().equals("0")){
-                        proceed = true;
+                    if(roomAdapter.data.get(i).getNumRoomSelected() != null){
+                        if(!roomAdapter.data.get(i).getNumRoomSelected().equals("0")){
+                            proceed = true;
+                        }
+                    }else{
+                        proceed = false;
+                        Toast.makeText(getApplicationContext(),"Please scroll down",Toast.LENGTH_SHORT).show();
+                        break;
                     }
                 }
                 if(proceed){

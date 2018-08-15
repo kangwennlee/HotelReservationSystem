@@ -13,7 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class HomepageFragment extends Fragment {
     private EditText checkIn, checkOut;
     private Spinner room,adult,children;
     private Button btnSearch;
+    private ImageButton btnLogin,btnReservation;
 
     Calendar myCalendar,myCalendar2;
 
@@ -85,11 +89,12 @@ public class HomepageFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_homepage, container, false);
         checkIn = v.findViewById(R.id.homepageCheckIn);
         checkOut = v.findViewById(R.id.homepageCheckOut);
-        room = v.findViewById(R.id.spinnerNumRoom);
+        //room = v.findViewById(R.id.spinnerNumRoom);
         adult = v.findViewById(R.id.spinnerNumAdult);
         children = v.findViewById(R.id.spinnerNumChildren);
         btnSearch = v.findViewById(R.id.searchButton);
-
+        btnLogin = v.findViewById(R.id.imageButtonLogin);
+        btnReservation = v.findViewById(R.id.imageButtonReservation);
 
         myCalendar = Calendar.getInstance();
         myCalendar2 = Calendar.getInstance();
@@ -148,7 +153,7 @@ public class HomepageFragment extends Fragment {
 
         Integer[] numRoom = {1,2,3,4,5};
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(),R.layout.spinner_item,numRoom);
-        room.setAdapter(adapter);
+        //room.setAdapter(adapter);
         adult.setAdapter(adapter);
         Integer[] numChild = {0,1,2,3};
         ArrayAdapter<Integer> adapter1 = new ArrayAdapter<Integer>(getContext(),R.layout.spinner_item,numChild);
@@ -161,13 +166,35 @@ public class HomepageFragment extends Fragment {
                 ArrayList<String> stringArrayList = new ArrayList<>();
                 stringArrayList.add(checkIn.getText().toString());
                 stringArrayList.add(checkOut.getText().toString());
-                stringArrayList.add(room.getSelectedItem().toString());
+                //stringArrayList.add(room.getSelectedItem().toString());
                 stringArrayList.add(adult.getSelectedItem().toString());
                 stringArrayList.add(children.getSelectedItem().toString());
                 i.putExtra("searchCriteria",stringArrayList);
                 startActivity(i);
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnReservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                    Intent i = new Intent(getContext(),PurchaseHistory2.class);
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(getContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
+
         return v;
     }
 

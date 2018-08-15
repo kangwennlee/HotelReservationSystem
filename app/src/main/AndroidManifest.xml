@@ -35,6 +35,7 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".AddCard"/>
         <activity android:name=".SuccessPaymentActivity"/>
+        <activity android:name=".PurchaseHistory2"/>
     </application>
 
 </manifest>

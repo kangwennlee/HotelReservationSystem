@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         //if the user is signed in, launch homepage, else launch the sign in (AuthUI) Activity
         if (auth.getCurrentUser() != null) {
+            Toast.makeText(getApplicationContext(),"Logged In",Toast.LENGTH_SHORT).show();
             finish();
         } else {
             signIn();

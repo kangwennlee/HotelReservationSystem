@@ -3,6 +3,7 @@ package com.kangw.hotelreservationsystem;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -17,8 +18,11 @@ import com.google.zxing.common.BitMatrix;
 
 public class SuccessPaymentActivity extends AppCompatActivity {
 
-    public final static int QRcodeWidth = 500 ;
-    Bitmap bitmap ;
+    public final static int QRcodeWidth = 500;
+    Bitmap bitmap;
+    String purchase;
+    ImageView imageViewQR;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +32,43 @@ public class SuccessPaymentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Intent intent = getIntent();
-        String purchase = intent.getStringExtra("purchase");
-        ImageView imageViewQR = findViewById(R.id.imageViewQR);
-        try {
-            bitmap = TextToImageEncode(purchase);
-            imageViewQR.setImageBitmap(bitmap);
-        }catch (WriterException e){
-            e.printStackTrace();
-        }
+        purchase = intent.getStringExtra("purchase");
+        imageViewQR = findViewById(R.id.imageViewQR);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = getLayoutInflater();
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater.inflate(R.layout.progress, null));
+        alertDialog = builder.create();
+        alertDialog.show();
+
+        Encode encode = new Encode();
+        encode.execute();
+
         TextView textViewQR = findViewById(R.id.textViewQRContent);
         textViewQR.setText(purchase);
+    }
+
+    private class Encode extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                bitmap = TextToImageEncode(purchase);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            imageViewQR.setImageBitmap(bitmap);
+            alertDialog.dismiss();
+        }
     }
 
     @Override
@@ -73,7 +104,7 @@ public class SuccessPaymentActivity extends AppCompatActivity {
             for (int x = 0; x < bitMatrixWidth; x++) {
 
                 pixels[offset + x] = bitMatrix.get(x, y) ?
-                        getResources().getColor(R.color.black):getResources().getColor(R.color.white);
+                        getResources().getColor(R.color.black) : getResources().getColor(R.color.white);
             }
         }
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);

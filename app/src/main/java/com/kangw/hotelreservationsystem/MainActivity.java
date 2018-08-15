@@ -20,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -27,6 +29,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -81,6 +84,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        TextView mUserName = findViewById(R.id.textViewUserName);
+        TextView mUserEmail = findViewById(R.id.textViewUserEmail);
+        try {
+            //Initialize name,email and profile picture at navigation header
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            mUserName.setText(user.getDisplayName());
+            mUserEmail.setText(user.getEmail());
+        } catch (NullPointerException e) {
+
+        }
         return true;
     }
 
@@ -117,6 +130,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent i = new Intent(getApplicationContext(),PurchaseHistory2.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_manage) {
 
@@ -129,12 +144,12 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Signed out!", Toast.LENGTH_LONG);
+                                Toast.makeText(getApplicationContext(), "Signed out!", Toast.LENGTH_LONG).show();
                                 //Intent i = new Intent(getApplicationContext(), LauncherActivity.class);
                                 //startActivity(i);
                                 //finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.sign_out_failed, Toast.LENGTH_LONG);
+                                Toast.makeText(getApplicationContext(), R.string.sign_out_failed, Toast.LENGTH_LONG).show();
                             }
                         }
                     });
