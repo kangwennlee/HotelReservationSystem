@@ -127,14 +127,18 @@ public class SearchResult extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean proceed = false;
+                int numZero = 0;
                 for(int i = 0; i<roomAdapter.data.size();i++){
                     if(roomAdapter.data.get(i).getNumRoomSelected() != null){
                         if(!roomAdapter.data.get(i).getNumRoomSelected().equals("0")){
                             proceed = true;
+                        }else{
+                            numZero++;
                         }
                     }else{
                         proceed = false;
-                        Toast.makeText(getApplicationContext(),"Please scroll down",Toast.LENGTH_SHORT).show();
+                        listView.smoothScrollToPosition(roomAdapter.getCount()-1);
+                        //Toast.makeText(getApplicationContext(),"Please scroll down",Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -152,9 +156,13 @@ public class SearchResult extends AppCompatActivity {
                     intent.putExtra("searchCriteria",searchCriteria);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(getApplicationContext(),"Please select number of rooms!",Toast.LENGTH_SHORT).show();
+                    if(numZero==4){
+                        Toast.makeText(getApplicationContext(),"Please select number of rooms!",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+
+
     }
 }
