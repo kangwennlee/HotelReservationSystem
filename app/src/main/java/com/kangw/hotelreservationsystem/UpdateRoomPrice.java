@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,7 +44,7 @@ public class UpdateRoomPrice extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.progress, null));
+        builder.setView(inflater.inflate(R.layout.dialog_progress, null));
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
@@ -78,7 +77,7 @@ public class UpdateRoomPrice extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 // Inflate and set the layout for the dialog
                 // Pass null as the parent view because its going in the dialog layout
-                builder.setView(inflater.inflate(R.layout.progress, null));
+                builder.setView(inflater.inflate(R.layout.dialog_progress, null));
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 

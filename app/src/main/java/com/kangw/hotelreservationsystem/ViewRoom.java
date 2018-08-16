@@ -2,7 +2,6 @@ package com.kangw.hotelreservationsystem;
 
 import android.app.AlertDialog;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class ViewRoom extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.progress, null));
+        builder.setView(inflater.inflate(R.layout.dialog_progress, null));
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 

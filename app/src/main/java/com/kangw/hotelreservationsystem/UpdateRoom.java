@@ -57,7 +57,7 @@ public class UpdateRoom extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.progress, null));
+        builder.setView(inflater.inflate(R.layout.dialog_progress, null));
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
         databaseRoom.addValueEventListener(new ValueEventListener() {
@@ -156,7 +156,7 @@ public class UpdateRoom extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 // Inflate and set the layout for the dialog
                 // Pass null as the parent view because its going in the dialog layout
-                builder.setView(inflater.inflate(R.layout.progress, null));
+                builder.setView(inflater.inflate(R.layout.dialog_progress, null));
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 roomList.get(spinnerRoomID.getSelectedItemPosition()).setRoomType(spinnerRoomType.getSelectedItem().toString());
