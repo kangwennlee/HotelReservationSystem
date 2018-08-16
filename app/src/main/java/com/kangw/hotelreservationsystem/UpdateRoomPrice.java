@@ -89,7 +89,7 @@ public class UpdateRoomPrice extends AppCompatActivity {
 
                 databaseRoomPrice.setValue(roomPrice);
                 alertDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Room Updated!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Room Price Updated!",Toast.LENGTH_SHORT).show();
             }
         });
     }

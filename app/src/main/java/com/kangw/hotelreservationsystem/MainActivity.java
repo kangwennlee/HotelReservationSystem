@@ -1,5 +1,7 @@
 package com.kangw.hotelreservationsystem;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         RoomFragment.OnFragmentInteractionListener,
         HomepageFragment.OnFragmentInteractionListener {
+
+    TextView username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +124,41 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        final FragmentTransaction ft = fm.beginTransaction();
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            Fragment fragment = new RoomFragment();
-            ft.replace(R.id.frame_container, fragment, "room").addToBackStack("room").commit();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Get the layout inflater
+            LayoutInflater inflater = getLayoutInflater();
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.dialog_signin, null))
+                    .setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
+                                Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT).show();
+                                Fragment fragment = new RoomFragment();
+                                ft.replace(R.id.frame_container, fragment, "room").addToBackStack("room").commit();
+                                dialog.dismiss();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Login Failed",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(),"Login Cancelled",Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            username = alertDialog.findViewById(R.id.username);
+            password = alertDialog.findViewById(R.id.password);
+
         } else if (id == R.id.nav_gallery) {
             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);

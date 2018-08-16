@@ -1,6 +1,7 @@
 package com.kangw.hotelreservationsystem;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,8 @@ public class SearchResult extends AppCompatActivity {
     ArrayList<String> searchCriteria;
     Button btnBook;
     RoomAdapter roomAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -190,7 +190,7 @@ public class ReservationConfirm extends AppCompatActivity {
             @Override
             public void onFingerprintNotAvailable() {
                 //messageText.setText("Fingerprint not available");
-                Toast.makeText(getApplicationContext(),"Fingerprint not available",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Fingerprint not available",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(),AddCard.class);
                 startActivityForResult(i,150);
             }
